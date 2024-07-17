@@ -49,11 +49,38 @@ export const signup = async (req, res) => {
     }
 }
 
-export const login = (req, res) => {
-    console.log('Login User')
+export const login = async (req, res) => {
+try{
+const{username,password} = req.body; 
+const user = await User.findOne({username});
+
+// compare entered pass with pass in DB user.password is the entered one
+const ispasscorrect = await bcrypt.compare(password,user?.password || "") //  we need to add empty string otherwise it will throw error 
+if(!user || !ispasscorrect){
+    return res.status(400).json({error:'Invalid Crediantials '})
+}
+generateTokenandSetcookie(user._id,res)
+
+res.status(200).json({
+    _id : user._id,
+    fullname: user.fullname,
+    username : user.username,
+    profilepic: user.profilepic,
+})
+} catch (error) {
+    console.log('Err in Login Controller ', error.message)
+    res.status(500).json({ error: "Interne Server Error" })
+}
 }
 
 export const logout = (req, res) => {
-    console.log('Logout User')
+    try{
+        res.cookie('jwt','',{maxAge:0})
+        res.status(200).json({message:"Logged Out Sucessfully"})
+    }
+    catch (error) {
+        console.log('Err in Logout Controller ', error.message)
+        res.status(500).json({ error: "Interne Server Error" })
+    }
 }
 
