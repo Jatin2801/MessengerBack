@@ -24,7 +24,7 @@ const userschema = new mongoose.Schema({
         type : String,
         default:""
     }
-})
+},{ timestamps : true }) // created , updated at
 
 const User = mongoose.model("User",userschema) // here we created the model with userschema
 

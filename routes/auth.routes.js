@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.post('/login',login) //we will make controllers to use funcs. of these routes
 
-router.post('/signup',signup)
+router.post('/signup',signup) // login , signup and logout are middleware/controller here 
 
 router.post('/logout',logout)
 

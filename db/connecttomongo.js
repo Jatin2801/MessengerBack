@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const connettomongo = async () => {
     try {
         await mongoose.connect(process.env.MONGO_DB_URI, { // we have MONGO_DB_URI in .env file 
