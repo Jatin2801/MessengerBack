@@ -3,7 +3,7 @@ import User from '../models/user.js'
 
 const protectRoute = async (req, res, next) => {
     try { // we need to import cookie-parser in server.js file 
-        const token = req.cookies.jwt; // we requested the token from cookies
+        const token = req.cookies.jwt; // we requested the token from cookies and we need to import cookie-parser in server.js 
         if (!token) {
             return res.status(401).json({ error: "Unauthorised Access -  No token provided " })
         }

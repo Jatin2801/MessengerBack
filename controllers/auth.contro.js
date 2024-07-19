@@ -35,7 +35,7 @@ export const signup = async (req, res) => {
 
             res.status(201).json({
                 _id: newUser._id,
-                fullname: newUser.fullname,
+                fullname: newUser.fullname, // .fullname is the fieldname 
                 username: newUser.username,
                 profilepic: newUser.profilepic
             })
@@ -75,8 +75,8 @@ res.status(200).json({
 
 export const logout = (req, res) => {
     try{
-        res.cookie('jwt','',{maxAge:0}) // we cleared the cookie here 
-        res.status(200).json({message:"Logged Out Sucessfully"})
+        res.cookie('jwt','',{maxAge:0}) // we cleared the cookie here and here by '' this we set the jwt to empty string 
+        res.status(200).json({message:"Logged Out Sucessfully"}) // by maxAge we specifies the cookie should expire immediatially 
     }
     catch (error) {
         console.log('Err in Logout Controller ', error.message)
