@@ -12,12 +12,12 @@ const protectRoute = async (req, res, next) => {
         if (!decode) {
             return res.status(401).json({ error: "Unauthorised Access - wrong token provided" })
         }
-        const user = await User.findById(decode.userId).select("-password") // this is userId as we called it the same in generateTokenandSetcookie
-        if(!user) {
-            return res.status(404).json({ error: "User Not Found" })
-        }
-        // when it passes all checks 
-        req.user = user // user is auththenticated i.e the user here is the same user as in our DB 
+        // const user = await User.findById(decode.userId).select("-password") // this is userId as we called it the same in generateTokenandSetcookie
+        // if(!user) {
+        //     return res.status(404).json({ error: "User Not Found" })
+        // }
+        // // when it passes all checks 
+        // req.user = user // user is auththenticated i.e the user here is the same user as in our DB 
 
         next()
     } catch (error) {

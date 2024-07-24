@@ -5,7 +5,7 @@ export const sendMsg = async (req, res) => {
     try {
         const { message } = req.body; // jo bhi msg type kiya 
         const { id: receiverId } = req.params; // this is destruc. other way is (const receiverId = req.params.id) and this one is used in route 
-        const senderId = req.user._id // currently authenticated user 
+        const senderId =  req.get('user-id')// currently authenticated user 
 
         // find conver. b/w these two users 
         let conversation = await Conversation.findOne({

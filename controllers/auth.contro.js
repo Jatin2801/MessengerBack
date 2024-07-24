@@ -10,7 +10,7 @@ export const signup = async (req, res) => {
         }
         const user = await User.findOne({ username }) // it will check if username exists in DB
         if (user) { // if user already exists
-            res.status(400).json({ error: "User Already Exists" })
+            return res.status(400).json({ error: "User Already Exists" })
         }
         // Hash Passwoed Here 
         const salt = await bcrypt.genSalt(10); // the higher the num value the secure it is but slow as well
@@ -29,7 +29,7 @@ export const signup = async (req, res) => {
         })
         if (newUser) { // if new User is being created 
             // Generate JWT token here for the new user 
-            generateTokenandSetcookie(newUser._id , res)
+            // generateTokenandSetcookie(newUser._id , res)
 
             await newUser.save() // save it to DB   and program will not move on until this is completed bcoz of await
 
@@ -45,7 +45,7 @@ export const signup = async (req, res) => {
     }
     catch (error) {
         console.log('Err in Signup Controller ', error.message)
-        res.status(500).json({ error: "Interne Server Error" })
+        return res.status(500).json({ error: "Interne Server Error" })
     }
 }
 
@@ -69,17 +69,17 @@ res.status(200).json({
 })
 } catch (error) {
     console.log('Err in Login Controller ', error.message)
-    res.status(500).json({ error: "Interne Server Error" })
+   return res.status(500).json({ error: "Interne Server Error" })
 }
 }
 
 export const logout = (req, res) => {
     try{
         res.cookie('jwt','',{maxAge:0}) // we cleared the cookie here and here by '' this we set the jwt to empty string 
-        res.status(200).json({message:"Logged Out Sucessfully"}) // by maxAge we specifies the cookie should expire immediatially 
+       return res.status(200).json({message:"Logged Out Sucessfully"}) // by maxAge we specifies the cookie should expire immediatially 
     }
     catch (error) {
         console.log('Err in Logout Controller ', error.message)
-        res.status(500).json({ error: "Interne Server Error" })
+       return res.status(500).json({ error: "Interne Server Error" })
     }
 }

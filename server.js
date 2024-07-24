@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 6000
 
 dotenv.config();
 
-app.get('/',(req,res)=>{
-    res.send('Hello')
-})
+// app.get('/',(req,res)=>{
+//     res.send('Hello')
+// })
 
 app.use(express.json()) // to parse the incoming requests with JSON payloads from req.body 
 app.use(cookieParser()) // to parse the incoming cookies from req.cookies 
