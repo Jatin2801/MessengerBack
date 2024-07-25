@@ -1,5 +1,5 @@
 import Conversation from '../models/conversation.js'
-import Message from '../models/messege.js';
+import Message from '../models/message.js';
 
 export const sendMsg = async (req, res) => {
     try {
@@ -44,21 +44,20 @@ export const sendMsg = async (req, res) => {
 export const getMsg = async (req, res) => {
     try {
         const { id: userToChatId } = req.params; //changed id name to userToChatId
-        const senderId = req.user._id  // coming from the protectRoute 
+        const senderId = req.get('user-id') // sent in header from UseGetMsgs
 
         const conversation = await Conversation.findOne({
             participants: { $all: [senderId, userToChatId] }
         }).populate("messages");
 
         if(!conversation){
-            res.status(200).json([]) // retrun empty array
+           return res.status(200).json([]) // retrun empty array
         }
 
-        const messages = conversation.messages
-
+        const messages = conversation.messages 
         res.status(200).json(messages) // this will give the array of msgs 
     } catch (error) {
-        console.log('Error In Sending Message', error.message)
+        console.log('Error In getController', error.message)
         res.status(500).json({ error: "Internal Server Error" })
     }
 }
