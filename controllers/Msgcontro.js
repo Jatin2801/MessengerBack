@@ -1,5 +1,6 @@
 import Conversation from '../models/conversation.js'
 import Message from '../models/message.js';
+import { getRecieverSocketId , io } from '../socket/socket.js';
 
 export const sendMsg = async (req, res) => {
     try {
@@ -31,10 +32,15 @@ export const sendMsg = async (req, res) => {
 
         // await conversation.save()
         // await newMsg.save() instead of this we did in below way 
-
         await Promise.all([conversation.save(), newMsg.save()]) // this will happen in parallel
 
+        const receiverSocketId = getRecieverSocketId(receiverId) //get receiver's socket id from receiverId
+        if (receiverSocketId) { // if receiver is online
+            io.to(receiverSocketId).emit("newMessage", newMsg) // we used to bcz we only want to send to user with this receiverSocketId
+        }
+
         res.status(201).json(newMsg)
+
     } catch (error) {
         console.log('Error In Sending Message', error.message)
         res.status(500).json({ error: "Internal Server Error" })
@@ -50,11 +56,11 @@ export const getMsg = async (req, res) => {
             participants: { $all: [senderId, userToChatId] }
         }).populate("messages");
 
-        if(!conversation){
-           return res.status(200).json([]) // retrun empty array
+        if (!conversation) {
+            return res.status(200).json([]) // retrun empty array
         }
 
-        const messages = conversation.messages 
+        const messages = conversation.messages
         res.status(200).json(messages) // this will give the array of msgs 
     } catch (error) {
         console.log('Error In getController', error.message)

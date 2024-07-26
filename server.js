@@ -6,9 +6,9 @@ import msgroutes from './routes/msgRoutes.js'
 import connettomongo from './db/connecttomongo.js';
 import userRoutes from './routes/uerroutes.js'
 import dotenv from "dotenv";
+import {app, server} from './socket/socket.js';
 
-const app = express();
-const PORT = process.env.PORT || 6000
+const PORT = process.env.PORT || 5000
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ app.use('/api/auth',authRoutes) //after /api/auth it will go in auth.routes.js
 app.use('/api/msg',msgroutes) 
 app.use('/api/users',userRoutes) 
 
-app.listen(PORT,()=>{ // this is run as soon as server starts 
+server.listen(PORT,()=>{ // this is run as soon as server starts 
     connettomongo()
     console.log(`server running on ${PORT}` // we will make change in package.json in scripts to be able to run server.js on commnd npm run server in terminal
 )}) 
